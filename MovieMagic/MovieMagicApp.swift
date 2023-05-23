@@ -19,6 +19,7 @@ struct MovieMagicApp: App {
         
     }
     
+    
     var body: some Scene {
         WindowGroup {
             NavigationView {

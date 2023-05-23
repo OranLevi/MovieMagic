@@ -85,7 +85,7 @@ extension SearchView {
             spacing: 5,
             pinnedViews: []) {
                 ForEach(0..<10) { _ in
-                    Detail()
+//                    Detail()
                 }
             }
     }

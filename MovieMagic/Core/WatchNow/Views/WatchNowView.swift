@@ -11,6 +11,7 @@ struct WatchNowView: View {
     
     @StateObject private var vm = WatchNowViewModel()
     
+    
     private let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -69,13 +70,14 @@ extension WatchNowView {
     }
     
     private var detail: some View {
+        
         LazyVGrid(
             columns: columns,
             alignment: .center,
             spacing: 5,
             pinnedViews: []) {
-                ForEach(0..<10) { _ in
-                    Detail()
+                ForEach(vm.moviesArray) { item in
+                    Detail(detail: item)
                 }
             }
     }

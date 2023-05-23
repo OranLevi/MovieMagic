@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct Detail: View {
+    
+    let detail: MovieResult
+    
     var body: some View {
         
         HStack{
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.theme.secondaryBackgroundColor)
-                .frame(width: 180, height: 300, alignment: .center)
+                .frame(width: 180, height: 370, alignment: .center)
                 .overlay {
                     VStack{
                         image
@@ -30,7 +33,7 @@ struct Detail: View {
 
 struct Detail_Previews: PreviewProvider {
     static var previews: some View {
-        Detail()
+        Detail(detail: dev.movie)
             .previewLayout(.sizeThatFits)
     }
 }
@@ -38,13 +41,13 @@ struct Detail_Previews: PreviewProvider {
 extension Detail {
     
     private var image: some View {
-        Rectangle()
-            .fill(Color.white)
-            .frame(height: 150)
+        PosterImageView(movie: detail)
+            
+       
     }
     
     private var titleName: some View {
-        Text("Name Movie")
+        Text(detail.title ?? detail.originalTitle ?? "")
             .foregroundColor(Color.theme.accent)
             .font(.headline)
             .fontWeight(.heavy)
@@ -53,11 +56,11 @@ extension Detail {
     }
     
     private var ratting: some View {
-        Text("****")
+        Text("\(detail.voteAverage ?? 0)")
     }
     
     private var overView: some View {
-        Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum")
+        Text(detail.overview ?? "n/a")
             .padding(.horizontal,4)
             .font(.footnote)
     }
