@@ -12,26 +12,27 @@ struct PosterImageView: View {
     
     @StateObject var vm: PosterImageViewModel
     
-    init(movie: MovieResult){
-        _vm = StateObject(wrappedValue: PosterImageViewModel(movie: movie))
+    init(watchNow: WatchNowResult){
+        _vm = StateObject(wrappedValue: PosterImageViewModel(watchNow: watchNow))
     }
+    
     var body: some View {
         ZStack{
             if let image = vm.image {
                 Image(uiImage: image)
                     .resizable()
                     .cornerRadius(20)
+                    .frame(maxHeight: 185)
             } else {
                 Image(systemName: "questionmark")
             }
         }
-        
     }
 }
 
 struct PosterImageView_Previews: PreviewProvider {
     static var previews: some View {
-        PosterImageView(movie: dev.movie)
+        PosterImageView(watchNow: dev.movie)
             .previewLayout(.sizeThatFits)
     }
 }

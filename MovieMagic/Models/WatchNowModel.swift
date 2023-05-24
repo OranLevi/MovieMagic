@@ -1,5 +1,5 @@
 //
-//  MovieModel.swift
+//  WatchNowModel.swift
 //  MovieMagic
 //
 //  Created by Oran Levi on 22/05/2023.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct MovieModel: Decodable {
-    let results: [MovieResult]?
+struct WatchNowModel: Decodable {
+    let results: [WatchNowResult]?
 }
 
 // MARK: - Result
-struct MovieResult: Identifiable, Decodable {
+struct WatchNowResult: Identifiable, Decodable {
     let backdropPath: String?
     let id: Int?
     let originalLanguage, originalTitle, overview: String?

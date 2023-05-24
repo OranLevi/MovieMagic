@@ -11,6 +11,7 @@ struct WatchNowView: View {
     
     @StateObject private var vm = WatchNowViewModel()
     
+    @State private var showFullDetailView: Bool = false
     
     private let columns: [GridItem] = [
         GridItem(.flexible()),
@@ -33,7 +34,11 @@ struct WatchNowView: View {
                 Spacer()
             }
             .padding(.horizontal,2)
-        }
+        }          .background(
+            NavigationLink(destination: FullDetailsView(),
+                           isActive: $showFullDetailView,
+                           label: { EmptyView()})
+        )
     }
 }
 
@@ -60,7 +65,7 @@ extension WatchNowView {
                                 .bold()
                         }
                         .onTapGesture {
-                            withAnimation(.easeIn){
+                            withAnimation(.spring()){
                                 vm.selectedCategory = index
                             }
                         }
@@ -76,9 +81,17 @@ extension WatchNowView {
             alignment: .center,
             spacing: 5,
             pinnedViews: []) {
-                ForEach(vm.moviesArray) { item in
-                    Detail(detail: item)
-                }
+                ForEach(
+                    vm.selectedCategory == selectedCategoryNames.populars.rawValue ? vm.popularArray:
+                        vm.selectedCategory == selectedCategoryNames.upcoming.rawValue ? vm.upcomingArray:
+                        vm.selectedCategory == selectedCategoryNames.trending.rawValue ? vm.trendingArray :
+                        vm.selectedCategory == selectedCategoryNames.topRated.rawValue ? vm.moviesTopRatedArray: [])  { item in
+                            Detail(detail: item)
+                                .onTapGesture {
+                                    showFullDetailView.toggle()
+                                }
+                        }
             }
     }
 }
+

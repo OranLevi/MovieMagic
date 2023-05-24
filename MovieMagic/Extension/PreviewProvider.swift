@@ -13,7 +13,6 @@ extension PreviewProvider {
     static var dev: DeveloperPreview {
         return DeveloperPreview.instance
     }
-    
 }
 
 class DeveloperPreview {
@@ -21,9 +20,9 @@ class DeveloperPreview {
     static let instance = DeveloperPreview()
     
     private init() {}
-    let detail = MovieModel(results: [MovieResult(backdropPath: "", id: 2, originalLanguage: "", originalTitle: "", overview: "", posterPath: "", releaseDate: "", title: "", voteAverage: 2, voteCount: 2)])
+    let detail = WatchNowModel(results: [WatchNowResult(backdropPath: "", id: 2, originalLanguage: "", originalTitle: "", overview: "", posterPath: "", releaseDate: "", title: "", voteAverage: 2, voteCount: 2)])
     
-    let movie = MovieResult(
+    let movie = WatchNowResult(
         backdropPath: "/nLBRD7UPR6GjmWQp6ASAfCTaWKX.jpg",
         id: 502356,
         originalLanguage: "en",

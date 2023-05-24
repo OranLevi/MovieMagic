@@ -12,6 +12,7 @@ struct FullDetailsView: View {
         ZStack{
             
             Color.theme.background
+                .ignoresSafeArea()
             
             ScrollView{
                 VStack(alignment: .center, spacing: 20 ){

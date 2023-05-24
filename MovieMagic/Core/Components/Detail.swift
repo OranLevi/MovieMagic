@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Detail: View {
     
-    let detail: MovieResult
+    let detail: WatchNowResult
     
     var body: some View {
         
@@ -41,9 +41,7 @@ struct Detail_Previews: PreviewProvider {
 extension Detail {
     
     private var image: some View {
-        PosterImageView(movie: detail)
-            
-       
+        PosterImageView(watchNow: detail)
     }
     
     private var titleName: some View {
