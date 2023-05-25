@@ -13,13 +13,13 @@ class PosterImageViewModel: ObservableObject {
     
     @Published var image: UIImage? = nil
     
-    let watchNow: WatchNowResult
+    let content: MovieMagicResult
     private let posterDataService: PosterImageService
     private var cancellables = Set<AnyCancellable>()
     
-    init(watchNow: WatchNowResult){
-        self.watchNow = watchNow
-        self.posterDataService = PosterImageService(watchNow: watchNow)
+    init(content: MovieMagicResult){
+        self.content = content
+        self.posterDataService = PosterImageService(content: content)
         self.addSubscribers()
     }
     

@@ -12,8 +12,8 @@ struct PosterImageView: View {
     
     @StateObject var vm: PosterImageViewModel
     
-    init(watchNow: WatchNowResult){
-        _vm = StateObject(wrappedValue: PosterImageViewModel(watchNow: watchNow))
+    init(content: MovieMagicResult){
+        _vm = StateObject(wrappedValue: PosterImageViewModel(content: content))
     }
     
     var body: some View {
@@ -22,7 +22,7 @@ struct PosterImageView: View {
                 Image(uiImage: image)
                     .resizable()
                     .cornerRadius(20)
-                    .frame(maxHeight: 185)
+                    .frame(minHeight: 185, maxHeight: 185)
             } else {
                 Image(systemName: "questionmark")
             }
@@ -32,7 +32,7 @@ struct PosterImageView: View {
 
 struct PosterImageView_Previews: PreviewProvider {
     static var previews: some View {
-        PosterImageView(watchNow: dev.movie)
+        PosterImageView(content: dev.movie)
             .previewLayout(.sizeThatFits)
     }
 }

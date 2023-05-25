@@ -13,18 +13,17 @@ class PosterImageService {
     
     @Published var image: UIImage? = nil
     
-    let watchNow: WatchNowResult
+    let content: MovieMagicResult
     var imageSubscription: AnyCancellable?
     
-    init(watchNow: WatchNowResult){
-        self.watchNow = watchNow
+    init(content: MovieMagicResult){
+        self.content = content
         downloadImage()
     }
     
     private func downloadImage(){
         
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(watchNow.posterPath ?? "")") else { return }
-        print(url)
+        guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(content.posterPath ?? "")") else { return }
         imageSubscription = NetworkingManger.download(url: url)
             .tryMap({ (data) -> UIImage? in
                 return UIImage(data: data)

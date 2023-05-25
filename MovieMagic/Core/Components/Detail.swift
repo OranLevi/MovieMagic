@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Detail: View {
     
-    let detail: WatchNowResult
+    let detail: MovieMagicResult
     
     var body: some View {
         
@@ -21,7 +21,10 @@ struct Detail: View {
                     VStack{
                         image
                         titleName
-                        ratting
+                        HStack{
+                            ratting
+                        }.padding(.vertical,0.2)
+                        
                         overView
                         Spacer()
                     }
@@ -41,11 +44,11 @@ struct Detail_Previews: PreviewProvider {
 extension Detail {
     
     private var image: some View {
-        PosterImageView(watchNow: detail)
+        PosterImageView(content: detail)
     }
     
     private var titleName: some View {
-        Text(detail.title ?? detail.originalTitle ?? "")
+        Text(detail.title ?? detail.originalTitle ?? detail.originalName ?? detail.name ?? "n/a")
             .foregroundColor(Color.theme.accent)
             .font(.headline)
             .fontWeight(.heavy)
@@ -54,11 +57,16 @@ extension Detail {
     }
     
     private var ratting: some View {
-        Text("\(detail.voteAverage ?? 0)")
+        HStack{
+            ForEach(0..<5) { index in
+                Image(systemName: "star.fill")
+                    .foregroundColor((Int(detail.voteAverage ?? 0) / 2) >= index ? Color.yellow : Color.gray )
+            }
+        }
     }
     
     private var overView: some View {
-        Text(detail.overview ?? "n/a")
+        Text(detail.overview == "" ? "N/A overview" : detail.overview ?? "")
             .padding(.horizontal,4)
             .font(.footnote)
     }

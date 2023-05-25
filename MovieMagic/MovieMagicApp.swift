@@ -10,6 +10,8 @@ import SwiftUI
 @main
 struct MovieMagicApp: App {
     
+    @State private var tabSelection = 0
+    
     init(){
         
         // change Tabbar color
@@ -19,24 +21,23 @@ struct MovieMagicApp: App {
         
     }
     
-    
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                TabView {
+                TabView(selection: $tabSelection) {
                     WatchNowView()
                         .tabItem {
                             Label("Watch Now", systemImage: "play.square")
                         }.tag(0)
                         .navigationBarHidden(true).navigationBarTitle("")
                     
-                    WatchNowView()
+                    MediaView(tabSelection: $tabSelection)
                         .tabItem {
                             Label("Movies", systemImage: "film.fill")
                         }.tag(1)
                         .navigationBarHidden(true).navigationBarTitle("")
                     
-                    WatchNowView()
+                    MediaView(tabSelection: $tabSelection)
                         .tabItem {
                             Label("TV", systemImage: "tv.fill")
                         }.tag(2)

@@ -11,15 +11,15 @@ import Combine
 class WatchNowDataService {
     
     // movies Arrays
-    @Published var moviesPopularArray: [WatchNowResult] = []
-    @Published var moviesTrendingArray: [WatchNowResult] = []
-    @Published var moviesUpcomingArray: [WatchNowResult] = []
-    @Published var moviesTopRatedArray: [WatchNowResult] = []
+    @Published var moviesPopularArray: [MovieMagicResult] = []
+    @Published var moviesTrendingArray: [MovieMagicResult] = []
+    @Published var moviesUpcomingArray: [MovieMagicResult] = []
+    @Published var moviesTopRatedArray: [MovieMagicResult] = []
     
     // tv Arrays
-    @Published var tvPopularArray: [WatchNowResult] = []
-    @Published var tvTrendingArray: [WatchNowResult] = []
-    @Published var tvUpcomingArray: [WatchNowResult] = []
+    @Published var tvPopularArray: [MovieMagicResult] = []
+    @Published var tvTrendingArray: [MovieMagicResult] = []
+    @Published var tvUpcomingArray: [MovieMagicResult] = []
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -51,9 +51,8 @@ class WatchNowDataService {
         let urlString = "\(mediaType.rawValue)\(Constants.API_KEY)"
         
         guard let url = URL(string: urlString) else { return }
-        print(url)
         NetworkingManger.download(url: url)
-            .decode(type: WatchNowModel.self, decoder: JSONDecoder())
+            .decode(type: MovieMagicModel.self, decoder: JSONDecoder())
         
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -64,7 +63,7 @@ class WatchNowDataService {
             .store(in: &cancellables)
     }
     
-    func switchMediaType(mediaType: MediaType, returnedMovies: WatchNowModel){
+    func switchMediaType(mediaType: MediaType, returnedMovies: MovieMagicModel){
         if mediaType == .moviePopular {
             moviesPopularArray = returnedMovies.results ?? []
         } else if mediaType == .movieTrending {

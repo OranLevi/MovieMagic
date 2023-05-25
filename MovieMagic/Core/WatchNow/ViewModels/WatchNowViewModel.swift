@@ -18,31 +18,31 @@ enum selectedCategoryNames: Int{
 class WatchNowViewModel: ObservableObject {
     
     // movies arrays
-    @Published var moviesPopularArray: [WatchNowResult] = []
-    @Published var moviesUpcomingArray: [WatchNowResult] = []
-    @Published var moviesTrendingArray: [WatchNowResult] = []
-    @Published var moviesTopRatedArray: [WatchNowResult] = []
+    @Published var moviesPopularArray: [MovieMagicResult] = []
+    @Published var moviesUpcomingArray: [MovieMagicResult] = []
+    @Published var moviesTrendingArray: [MovieMagicResult] = []
+    @Published var moviesTopRatedArray: [MovieMagicResult] = []
     
     // tv arrays
-    @Published var tvPopularArray: [WatchNowResult] = []
-    @Published var tvTrendingArray: [WatchNowResult] = []
-    @Published var tvUpcomingArray: [WatchNowResult] = []
+    @Published var tvPopularArray: [MovieMagicResult] = []
+    @Published var tvTrendingArray: [MovieMagicResult] = []
+    @Published var tvUpcomingArray: [MovieMagicResult] = []
     
     // combine arrays
-    var popularArray: [WatchNowResult] {
+    var popularArray: [MovieMagicResult] {
         return moviesPopularArray + tvPopularArray
     }
     
-    var trendingArray: [WatchNowResult] {
+    var trendingArray: [MovieMagicResult] {
         return moviesTrendingArray + tvTrendingArray
     }
     
-    var upcomingArray: [WatchNowResult] {
+    var upcomingArray: [MovieMagicResult] {
         return moviesUpcomingArray + tvUpcomingArray
     }
     
     @Published var navBarArray: [String] = ["Populars","Upcoming","Trending","Top Rated"]
-    @Published var selectedCategory: Int = 0 
+    @Published var selectedCategory: Int = 0
     
     private let dataService = WatchNowDataService()
     private var cancellables = Set<AnyCancellable>()

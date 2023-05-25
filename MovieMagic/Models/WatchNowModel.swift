@@ -7,25 +7,30 @@
 
 import Foundation
 
-struct WatchNowModel: Decodable {
-    let results: [WatchNowResult]?
+struct MovieMagicModel: Decodable {
+    let results: [MovieMagicResult]?
 }
 
 // MARK: - Result
-struct WatchNowResult: Identifiable, Decodable {
+struct MovieMagicResult: Identifiable, Decodable {
     let backdropPath: String?
+    let firstAirDate: String?
+    let name: String?
     let id: Int?
-    let originalLanguage, originalTitle, overview: String?
+    let originalLanguage, originalTitle, originalName, overview: String?
     let posterPath, releaseDate, title: String?
+    let popularity: Double?
     let voteAverage: Double?
     let voteCount: Int?
     
     enum CodingKeys: String, CodingKey {
         case backdropPath = "backdrop_path"
-        case id
+        case firstAirDate = "first_air_date"
+        case id, name
         case originalLanguage = "original_language"
         case originalTitle = "original_title"
-        case overview
+        case overview, popularity
+        case originalName
         case posterPath = "poster_path"
         case releaseDate = "release_date"
         case title
