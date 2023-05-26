@@ -15,11 +15,6 @@ class MediaDataService {
     
     private var cancellables = Set<AnyCancellable>()
     
-    enum MediaType: String {
-        case movie
-        case tv
-    }
-    
     init(){
         getMediaData(mediaType: .movie, page: 1)
         getMediaData(mediaType: .tv, page: 1)
@@ -30,7 +25,6 @@ class MediaDataService {
         let urlString = "https://api.themoviedb.org/3/discover/\(mediaType.rawValue)?page=\(page)&api_key=\(Constants.API_KEY)"
         
         guard let url = URL(string: urlString) else { return }
-        print(url)
         NetworkingManger.download(url: url)
             .decode(type: MovieMagicModel.self, decoder: JSONDecoder())
         
@@ -44,10 +38,29 @@ class MediaDataService {
     }
     
     func switchMediaType(mediaType: MediaType, returnedData: MovieMagicModel){
-        if mediaType == .movie {
-            moviesArray += returnedData.results ?? []
-        } else if mediaType == .tv {
-            tvArray += returnedData.results ?? []
+        
+        switch mediaType {
+        case .movie:
+            updateKindMedia(mediaType: .movie, array: &moviesArray, returnedData: returnedData)
+        case .tv:
+            updateKindMedia(mediaType: .tv, array: &tvArray, returnedData: returnedData)
+        }
+        
+        func updateKindMedia(mediaType: MediaType,array: inout [MovieMagicResult], returnedData: MovieMagicModel) {
+            let kindMedia: String?
+            
+            switch mediaType {
+            case .movie:
+                kindMedia = "movie"
+            case .tv:
+                kindMedia = "tv"
+            }
+            
+            array += returnedData.results?.map { kindType in
+                var updatedMovie = kindType
+                updatedMovie.kindMedia = kindMedia
+                return updatedMovie
+            } ?? []
         }
     }
 }

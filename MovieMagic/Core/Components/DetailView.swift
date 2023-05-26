@@ -1,5 +1,5 @@
 //
-//  Detail.swift
+//  DetailView.swift
 //  MovieMagic
 //
 //  Created by Oran Levi on 22/05/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Detail: View {
+struct DetailView: View {
     
     let detail: MovieMagicResult
     
@@ -34,14 +34,14 @@ struct Detail: View {
     }
 }
 
-struct Detail_Previews: PreviewProvider {
+struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
-        Detail(detail: dev.movie)
+        DetailView(detail: dev.movie)
             .previewLayout(.sizeThatFits)
     }
 }
 
-extension Detail {
+extension DetailView {
     
     private var image: some View {
         PosterImageView(content: detail)

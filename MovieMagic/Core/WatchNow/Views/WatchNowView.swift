@@ -25,7 +25,7 @@ struct WatchNowView: View {
                 .ignoresSafeArea()
             
             VStack{
-                Header(title: "Watch Now")
+                HeaderView(title: "Watch Now")
                 
                 navBar
                 ScrollView(.vertical, showsIndicators: false){
@@ -35,7 +35,7 @@ struct WatchNowView: View {
             }
             .padding(.horizontal,2)
         }          .background(
-            NavigationLink(destination: FullDetailsView(),
+            NavigationLink(destination: FullDetailsView(id: $vm.selectedItemId, kindMedia: $vm.selectedKindMedia),
                            isActive: $showFullDetailView,
                            label: { EmptyView()})
         )
@@ -86,8 +86,10 @@ extension WatchNowView {
                         vm.selectedCategory == selectedCategoryNames.upcoming.rawValue ? vm.upcomingArray:
                         vm.selectedCategory == selectedCategoryNames.trending.rawValue ? vm.trendingArray :
                         vm.selectedCategory == selectedCategoryNames.topRated.rawValue ? vm.moviesTopRatedArray: [])  { item in
-                            Detail(detail: item)
+                            DetailView(detail: item)
                                 .onTapGesture {
+                                    vm.selectedItemId = item.id ?? 0
+                                    vm.selectedKindMedia = item.kindMedia == "movie" ? .movie : .tv
                                     showFullDetailView.toggle()
                                 }
                         }

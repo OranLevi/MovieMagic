@@ -10,12 +10,11 @@ import SwiftUI
 struct MediaView: View {
     
     @StateObject private var vm = MediaViewModel()
+    private let dataService = MediaDataService()
     
     @Binding var tabSelection: Int
     
     @State private var showFullDetailView: Bool = false
-    
-    private let dataService = MediaDataService()
     
     private let columns: [GridItem] = [
         GridItem(.flexible()),
@@ -28,9 +27,9 @@ struct MediaView: View {
                 .ignoresSafeArea()
             
             VStack{
-                Header(title:
+                HeaderView(title:
                         tabSelection == 1 ? "Movies" :
-                        tabSelection == 2 ? "Tv" : "")
+                        tabSelection == 2 ? "TV" : "")
                 
                 ScrollView(.vertical, showsIndicators: false){
                     detail
@@ -39,7 +38,7 @@ struct MediaView: View {
                 Spacer()
             }
         }        .background(
-            NavigationLink(destination: FullDetailsView(),
+            NavigationLink(destination: FullDetailsView(id: $vm.selectedItemId, kindMedia: $vm.selectedKindMedia),
                            isActive: $showFullDetailView,
                            label: { EmptyView()})
         )
@@ -52,6 +51,7 @@ struct MediaView_Previews: PreviewProvider {
     }
 }
 
+
 extension MediaView {
     private var detail: some View {
         
@@ -63,8 +63,10 @@ extension MediaView {
                 ForEach(
                     tabSelection == 1 ? vm.moviesArray :
                         tabSelection == 2 ? vm.tvArray : [])  { item in
-                            Detail(detail: item)
+                            DetailView(detail: item)
                                 .onTapGesture {
+                                    vm.selectedItemId = item.id ?? 0
+                                    vm.selectedKindMedia = item.kindMedia == "movie" ? .movie : .tv
                                     showFullDetailView.toggle()
                                 }
                         }
@@ -74,8 +76,7 @@ extension MediaView {
     private var loadMoreButton: some View {
         Button {
             vm.loadMore(mediaType:
-                            tabSelection == 1 ? .movie :
-                            tabSelection == 2 ? .tv : .tv)
+                            tabSelection == 1 ? .movie : .tv)
         } label: {
             Text("Load More..")
                 .padding()

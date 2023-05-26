@@ -20,7 +20,8 @@ class DeveloperPreview {
     static let instance = DeveloperPreview()
     
     private init() {}
-    let detail = MovieMagicModel(results: [MovieMagicResult(backdropPath: "", firstAirDate: "", name: "", id: 2, originalLanguage: "", originalTitle: "", originalName: "", overview: "", posterPath: "", releaseDate: "", title: "", popularity: 2, voteAverage: 2, voteCount: 3)])
+    
+    let detail = MovieMagicModel(results: [MovieMagicResult(backdropPath: "", firstAirDate: "", name: "", id: 2, originalLanguage: "", originalTitle: "", originalName: "", overview: "", posterPath: "", releaseDate: "", title: "", popularity: 2, voteAverage: 2, voteCount: 3, kindMedia: "movie" )])
     
     let movie = MovieMagicResult(
         backdropPath: "/nLBRD7UPR6GjmWQp6ASAfCTaWKX.jpg",
@@ -36,5 +37,6 @@ class DeveloperPreview {
         title: "The Super Mario Bros. Movie",
         popularity: 2,
         voteAverage: 5,
-        voteCount: 3049)
+        voteCount: 3049,
+        kindMedia: "movie")
 }

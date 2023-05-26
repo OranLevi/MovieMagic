@@ -8,7 +8,7 @@
 import Foundation
 
 struct MovieMagicModel: Decodable {
-    let results: [MovieMagicResult]?
+    var results: [MovieMagicResult]?
 }
 
 // MARK: - Result
@@ -22,6 +22,7 @@ struct MovieMagicResult: Identifiable, Decodable {
     let popularity: Double?
     let voteAverage: Double?
     let voteCount: Int?
+    var kindMedia: String?
     
     enum CodingKeys: String, CodingKey {
         case backdropPath = "backdrop_path"
@@ -36,5 +37,7 @@ struct MovieMagicResult: Identifiable, Decodable {
         case title
         case voteAverage = "vote_average"
         case voteCount = "vote_count"
+        case kindMedia
     }
+    
 }

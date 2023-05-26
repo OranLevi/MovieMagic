@@ -26,7 +26,7 @@ class WatchNowViewModel: ObservableObject {
     // tv arrays
     @Published var tvPopularArray: [MovieMagicResult] = []
     @Published var tvTrendingArray: [MovieMagicResult] = []
-    @Published var tvUpcomingArray: [MovieMagicResult] = []
+    @Published var tvTopRatedArray: [MovieMagicResult] = []
     
     // combine arrays
     var popularArray: [MovieMagicResult] {
@@ -38,11 +38,14 @@ class WatchNowViewModel: ObservableObject {
     }
     
     var upcomingArray: [MovieMagicResult] {
-        return moviesUpcomingArray + tvUpcomingArray
+        return moviesUpcomingArray + tvTopRatedArray
     }
     
     @Published var navBarArray: [String] = ["Populars","Upcoming","Trending","Top Rated"]
     @Published var selectedCategory: Int = 0
+    
+    @Published var selectedItemId:Int = 0
+    @Published var selectedKindMedia: MediaType = .movie
     
     private let dataService = WatchNowDataService()
     private var cancellables = Set<AnyCancellable>()
@@ -71,14 +74,13 @@ class WatchNowViewModel: ObservableObject {
         dataService.$tvPopularArray
             .combineLatest(
                 dataService.$tvTrendingArray,
-                dataService.$tvUpcomingArray)
-            .sink { [weak self] (returnedPopular,returnedTrending,returnedUpcoming) in
+                dataService.$tvTopRatedArray)
+            .sink { [weak self] (returnedPopular,returnedTrending,returnedTopRated) in
                 self?.tvPopularArray = returnedPopular
                 self?.tvTrendingArray = returnedTrending
-                self?.tvUpcomingArray = returnedUpcoming
+                self?.tvTopRatedArray = returnedTopRated
             }
             .store(in: &cancellables)
-        
         
     }
 }

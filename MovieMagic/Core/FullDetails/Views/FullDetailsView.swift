@@ -8,6 +8,18 @@
 import SwiftUI
 
 struct FullDetailsView: View {
+    
+    @StateObject var vm = FullDetailsViewModel()
+    @Binding var id: Int
+    @Binding var kindMedia: MediaType
+    
+    private let dataService = FullDetailsService()
+    
+    private let columns: [GridItem] = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+    ]
+    
     var body: some View {
         ZStack{
             
@@ -27,17 +39,27 @@ struct FullDetailsView: View {
                     
                     overViewDescription
                     
+                    moreDetailsTitle
+                    
+                    Divider()
+                        .overlay(Color.theme.accent)
+                    
+                    //                    moreDetailsDescription
+                    
                     Spacer()
                 }
                 .padding()
             }
+        }.onAppear{
+            vm.loadDetails(mediaType: kindMedia, id: id)
         }
     }
 }
 
 struct FullDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        FullDetailsView()
+        FullDetailsView(id: .constant(0), kindMedia: .constant(.movie))
+        
     }
 }
 
@@ -50,17 +72,19 @@ extension FullDetailsView {
     }
     
     private var titleName: some View {
-        Text("Name Movie")
+        Text(vm.fullDetails.first?.title ?? vm.fullDetails.first?.name ?? "")
             .foregroundColor(Color.theme.accent)
             .font(.title2)
             .fontWeight(.heavy)
     }
     
     private var ratting: some View {
-        Text("****")
-            .foregroundColor(Color.theme.accent)
-            .font(.title2)
-            .fontWeight(.heavy)
+        HStack{
+            ForEach(0..<5) { index in
+                Image(systemName: "star.fill")
+                    .foregroundColor((Int(vm.fullDetails.first?.voteAverage ?? 0) / 2) >= index ? Color.yellow : Color.gray )
+            }
+        }
     }
     
     private var overViewTitle: some View {
@@ -71,10 +95,30 @@ extension FullDetailsView {
             .frame(maxWidth: .infinity, alignment: .leading)
     }
     
+    private var moreDetailsTitle: some View {
+        Text("More Details:")
+            .foregroundColor(Color.theme.accent)
+            .fontWeight(.semibold)
+            .font(.title2)
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+    
     private var overViewDescription: some View {
-        Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum")
+        Text(vm.fullDetails.first?.overview ?? "N/A overView")
             .foregroundColor(Color.theme.accent)
             .font(.callout)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
+    
+    //    private var moreDetailsDescription: some View {
+    //        LazyVGrid(
+    //            columns: columns,
+    //            alignment: .center,
+    //            spacing: 5,
+    //            pinnedViews: []) {
+    //
+    //            }
+    //    }
+    
 }
+

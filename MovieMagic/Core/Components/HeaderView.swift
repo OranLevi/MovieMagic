@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Header: View {
+struct HeaderView: View {
     
     let title: String
     
@@ -21,16 +21,16 @@ struct Header: View {
     }
 }
 
-struct Header_Previews: PreviewProvider {
+struct HeaderView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack{
             Color.theme.secondaryBackgroundColor
-            Header(title: "Watch Now")
+            HeaderView(title: "Watch Now")
         }
     }
 }
 
-extension Header {
+extension HeaderView {
     
     private var headerTitle: some View{
         Text(title)
