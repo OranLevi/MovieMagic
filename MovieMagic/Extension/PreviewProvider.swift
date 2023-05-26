@@ -21,7 +21,9 @@ class DeveloperPreview {
     
     private init() {}
     
-    let detail = MovieMagicModel(results: [MovieMagicResult(backdropPath: "", firstAirDate: "", name: "", id: 2, originalLanguage: "", originalTitle: "", originalName: "", overview: "", posterPath: "", releaseDate: "", title: "", popularity: 2, voteAverage: 2, voteCount: 3, kindMedia: "movie" )])
+    let moreFullDetails = MoreFullDetailsModel(title: "title", value: "value")
+    
+    let detail = MovieMagicModel(results: [MovieMagicResult(backdropPath: "", firstAirDate: "", name: "", id: 2, originalLanguage: "", originalTitle: "", originalName: "", overview: "", posterPath: "", releaseDate: "", title: "", popularity: 2, voteAverage: 2, voteCount: 3, status: "Released", kindMedia: "movie" )])
     
     let movie = MovieMagicResult(
         backdropPath: "/nLBRD7UPR6GjmWQp6ASAfCTaWKX.jpg",
@@ -38,5 +40,6 @@ class DeveloperPreview {
         popularity: 2,
         voteAverage: 5,
         voteCount: 3049,
+        status: "Released",
         kindMedia: "movie")
 }

@@ -13,8 +13,6 @@ struct FullDetailsView: View {
     @Binding var id: Int
     @Binding var kindMedia: MediaType
     
-    private let dataService = FullDetailsService()
-    
     private let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -38,13 +36,12 @@ struct FullDetailsView: View {
                         .overlay(Color.theme.accent)
                     
                     overViewDescription
-                    
                     moreDetailsTitle
                     
                     Divider()
                         .overlay(Color.theme.accent)
                     
-                    //                    moreDetailsDescription
+                    moreDetailsDescription
                     
                     Spacer()
                 }
@@ -59,16 +56,16 @@ struct FullDetailsView: View {
 struct FullDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         FullDetailsView(id: .constant(0), kindMedia: .constant(.movie))
-        
     }
 }
 
 extension FullDetailsView {
     private var image: some View {
-        Rectangle()
-            .fill(Color.white)
-            .frame(width: .infinity, height: 250)
-            .cornerRadius(10)
+        if let backdropPath = vm.fullDetails.first?.backdropPath {
+            return AnyView(BackdropImageView(backdropPathUrl: "\(backdropPath)"))
+        } else {
+            return AnyView(ProgressView())
+        }
     }
     
     private var titleName: some View {
@@ -110,15 +107,16 @@ extension FullDetailsView {
             .frame(maxWidth: .infinity, alignment: .leading)
     }
     
-    //    private var moreDetailsDescription: some View {
-    //        LazyVGrid(
-    //            columns: columns,
-    //            alignment: .center,
-    //            spacing: 5,
-    //            pinnedViews: []) {
-    //
-    //            }
-    //    }
-    
+    private var moreDetailsDescription: some View {
+        LazyVGrid(
+            columns: columns,
+            alignment: .center,
+            spacing: 5,
+            pinnedViews: []) {
+                ForEach(vm.moreFullDetails) { item in
+                    MoreFullDetails(moreFullDetails: item)
+                }
+            }
+    }
 }
 

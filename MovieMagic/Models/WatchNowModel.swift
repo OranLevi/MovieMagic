@@ -22,6 +22,7 @@ struct MovieMagicResult: Identifiable, Decodable {
     let popularity: Double?
     let voteAverage: Double?
     let voteCount: Int?
+    let status: String?
     var kindMedia: String?
     
     enum CodingKeys: String, CodingKey {
@@ -37,7 +38,7 @@ struct MovieMagicResult: Identifiable, Decodable {
         case title
         case voteAverage = "vote_average"
         case voteCount = "vote_count"
+        case status
         case kindMedia
     }
-    
 }

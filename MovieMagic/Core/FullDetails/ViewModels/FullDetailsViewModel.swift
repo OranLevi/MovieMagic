@@ -11,10 +11,11 @@ import Combine
 class FullDetailsViewModel: ObservableObject {
     
     @Published var fullDetails: [MovieMagicResult] = []
+    @Published var moreFullDetails: [MoreFullDetailsModel] = []
     
-    private let dataService = FullDetailsService()
+    private let fullDetailsDataService = FullDetailsService()
+    
     private var cancellables = Set<AnyCancellable>()
-    
     
     init(){
         addSubscribers()
@@ -22,15 +23,30 @@ class FullDetailsViewModel: ObservableObject {
     
     func addSubscribers(){
         
-        dataService.$fullDetails
-            .sink { [weak self] (returnedFullDetails) in
-                self?.fullDetails = returnedFullDetails
+        fullDetailsDataService.$fullDetails
+            .sink { [weak self] (data) in
+                let mappedDetails = data.flatMap { fullDetail -> [MoreFullDetailsModel] in
+                    var moreFullDetailArray: [MoreFullDetailsModel] = []
+                    
+                    let releaseDate = MovieMagic.MoreFullDetailsModel(title: "Release date", value: fullDetail.releaseDate ?? fullDetail.firstAirDate ?? "N/A")
+                    let status = MovieMagic.MoreFullDetailsModel(title: "Status", value: fullDetail.status ?? "N/A")
+                    let originalLanguage = MovieMagic.MoreFullDetailsModel(title: "Language", value: fullDetail.originalLanguage ?? "N/A")
+                    
+                    moreFullDetailArray.append(contentsOf: [
+                        releaseDate, status, originalLanguage
+                    ])
+                    
+                    return moreFullDetailArray
+                }
+                
+                self?.fullDetails = data
+                self?.moreFullDetails = mappedDetails
             }
             .store(in: &cancellables)
     }
     
     func loadDetails(mediaType: MediaType, id: Int){
-        dataService.getFullDetails(mediaType: mediaType, id: id)
-        addSubscribers()
+        fullDetailsDataService.getFullDetails(mediaType: mediaType, id: id)
     }
+    
 }
