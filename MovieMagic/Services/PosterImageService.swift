@@ -18,22 +18,36 @@ class PosterImageService {
     
     init(content: MovieMagicResult){
         self.content = content
-        downloadImage()
+        loadImage()
     }
     
-    private func downloadImage(){
+    private func loadImage(){
         
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(content.posterPath ?? "")") else { return }
-        imageSubscription = NetworkingManger.download(url: url)
-            .tryMap({ (data) -> UIImage? in
-                return UIImage(data: data)
-            })
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                NetworkingManger.handleCompletion(completion: completion)
-            } receiveValue: { [weak self] returnedImage in
-                self?.image = returnedImage
-                self?.imageSubscription?.cancel()
+        guard let posterPath = content.posterPath else {
+            return
+        }
+        
+        if let cachedImage = CacheManager.instance.get(name: posterPath) {
+            self.image = cachedImage
+        } else {
+            guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)") else {
+                return
             }
+            
+            imageSubscription = NetworkingManger.download(url: url)
+                .tryMap({ (data) -> UIImage? in
+                    return UIImage(data: data)
+                })
+                .receive(on: DispatchQueue.main)
+                .sink { completion in
+                    NetworkingManger.handleCompletion(completion: completion)
+                } receiveValue: { [weak self] returnedImage in
+                    if let image = returnedImage {
+                        CacheManager.instance.addToCache(image: image, name: posterPath)
+                    }
+                    self?.image = returnedImage
+                    self?.imageSubscription?.cancel()
+                }
+        }
     }
 }

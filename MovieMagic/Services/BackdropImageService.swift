@@ -18,22 +18,31 @@ class BackdropImageService {
     
     init(backdropPathUrl: String){
         self.backdropPathUrl = backdropPathUrl
-        downloadImage()
+        loadImage()
     }
     
-    func downloadImage(){
+    func loadImage(){
         
-        guard let url = URL(string: "https://image.tmdb.org/t/p/original/\(backdropPathUrl)") else { return }
-        imageSubscription = NetworkingManger.download(url: url)
-            .tryMap({ (data) -> UIImage? in
-                return UIImage(data: data)
-            })
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                NetworkingManger.handleCompletion(completion: completion)
-            } receiveValue: { [weak self] returnedImage in
-                self?.image = returnedImage
-                self?.imageSubscription?.cancel()
-            }
+        let backdrop = backdropPathUrl
+        
+        if let cachedImage = CacheManager.instance.get(name: backdropPathUrl) {
+            self.image = cachedImage
+        } else {
+            guard let url = URL(string: "https://image.tmdb.org/t/p/original/\(backdropPathUrl)") else { return }
+            imageSubscription = NetworkingManger.download(url: url)
+                .tryMap({ (data) -> UIImage? in
+                    return UIImage(data: data)
+                })
+                .receive(on: DispatchQueue.main)
+                .sink { completion in
+                    NetworkingManger.handleCompletion(completion: completion)
+                } receiveValue: { [weak self] returnedImage in
+                    if let image = returnedImage {
+                        CacheManager.instance.addToCache(image: image, name: backdrop)
+                    }
+                    self?.image = returnedImage
+                    self?.imageSubscription?.cancel()
+                }
+        }
     }
 }
