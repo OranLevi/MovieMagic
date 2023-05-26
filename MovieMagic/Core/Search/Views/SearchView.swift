@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SearchView: View {
     
-    @State private var searchText: String = ""
+    @StateObject var vm: SearchViewModel
+    @State private var showFullDetailView: Bool = false
     
     private let columns: [GridItem] = [
         GridItem(.flexible()),
@@ -23,15 +24,15 @@ struct SearchView: View {
                 .ignoresSafeArea()
             
             VStack{
-                
                 searchTextFiled
                 ScrollView(.vertical, showsIndicators: false){
                     results
                 }
+                
                 Spacer()
                 
             }
-            .padding()
+            .padding(.horizontal,2)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -44,12 +45,17 @@ struct SearchView: View {
                 }
             }
         }
+        .background(
+            NavigationLink(destination: FullDetailsView(id: $vm.selectedItemId, kindMedia: $vm.selectedKindMedia),
+                           isActive: $showFullDetailView,
+                           label: { EmptyView()})
+        )
     }
 }
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        SearchView(vm: SearchViewModel(textSearch: ""))
     }
 }
 
@@ -57,8 +63,8 @@ extension SearchView {
     
     private var searchTextFiled: some View {
         
-        TextField("Search", text: $searchText)
-            .modifier(PlaceholderStyle(showPlaceHolder: searchText.isEmpty, placeholder: "Search.."))
+        TextField("Search", text: $vm.textSearch)
+            .modifier(PlaceholderStyle(showPlaceHolder: vm.textSearch.isEmpty, placeholder: "Search.."))
             .padding()
             .frame(height: 50)
             .foregroundColor(.white)
@@ -69,9 +75,9 @@ extension SearchView {
                 Image(systemName: "xmark.circle.fill")
                     .foregroundColor(.white)
                     .padding()
-                    .opacity(searchText.isEmpty ? 0.0 : 1.0)
+                    .opacity(vm.textSearch.isEmpty ? 0.0 : 1.0)
                     .onTapGesture {
-                        searchText = ""
+                        vm.textSearch = ""
                     }
                 ,alignment: .trailing
             )
@@ -84,8 +90,13 @@ extension SearchView {
             alignment: .center,
             spacing: 5,
             pinnedViews: []) {
-                ForEach(0..<10) { _ in
-//                    Detail()
+                ForEach(vm.search) { item in
+                    DetailView(detail: item)
+                        .onTapGesture {
+                            vm.selectedItemId = item.id ?? 0
+                            vm.selectedKindMedia = item.media_type == "movie" ? .movie : .tv
+                            showFullDetailView.toggle()
+                        }
                 }
             }
     }

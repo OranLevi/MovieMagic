@@ -23,7 +23,7 @@ class DeveloperPreview {
     
     let moreFullDetails = MoreFullDetailsModel(title: "title", value: "value")
     
-    let detail = MovieMagicModel(results: [MovieMagicResult(backdropPath: "", firstAirDate: "", name: "", id: 2, originalLanguage: "", originalTitle: "", originalName: "", overview: "", posterPath: "", releaseDate: "", title: "", popularity: 2, voteAverage: 2, voteCount: 3, status: "Released", kindMedia: "movie" )])
+    let detail = MovieMagicModel(results: [MovieMagicResult(backdropPath: "", firstAirDate: "", name: "", id: 2, originalLanguage: "", originalTitle: "", originalName: "", overview: "", posterPath: "", releaseDate: "", title: "", media_type: "movie", popularity: 2, voteAverage: 2, voteCount: 3, status: "Released", kindMedia: "movie" )])
     
     let movie = MovieMagicResult(
         backdropPath: "/nLBRD7UPR6GjmWQp6ASAfCTaWKX.jpg",
@@ -37,6 +37,7 @@ class DeveloperPreview {
         posterPath: "/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg",
         releaseDate: "2023-04-05",
         title: "The Super Mario Bros. Movie",
+        media_type: "movie",
         popularity: 2,
         voteAverage: 5,
         voteCount: 3049,

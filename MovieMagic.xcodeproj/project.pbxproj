@@ -37,6 +37,7 @@
 		17D09C192A20EB09005508CC /* BackdropImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D09C182A20EB09005508CC /* BackdropImageViewModel.swift */; };
 		17D09C1C2A20EBFE005508CC /* BackdropImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D09C1B2A20EBFE005508CC /* BackdropImageView.swift */; };
 		17D09C1E2A20F860005508CC /* BackdropImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D09C1D2A20F860005508CC /* BackdropImageService.swift */; };
+		17D09C262A210CA1005508CC /* SearchDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D09C252A210CA1005508CC /* SearchDataService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +72,7 @@
 		17D09C182A20EB09005508CC /* BackdropImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackdropImageViewModel.swift; sourceTree = "<group>"; };
 		17D09C1B2A20EBFE005508CC /* BackdropImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackdropImageView.swift; sourceTree = "<group>"; };
 		17D09C1D2A20F860005508CC /* BackdropImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackdropImageService.swift; sourceTree = "<group>"; };
+		17D09C252A210CA1005508CC /* SearchDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDataService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 			children = (
 				172E41F42A1B92F600C70A10 /* WatchNowDataService.swift */,
 				1764E1472A1E6A8800B920A7 /* MediaDataService.swift */,
+				17D09C252A210CA1005508CC /* SearchDataService.swift */,
 				172E41FB2A1BAAA800C70A10 /* PosterImageService.swift */,
 				17D09C1D2A20F860005508CC /* BackdropImageService.swift */,
 				177F3BD52A1F933F00FF78EB /* FullDetailsService.swift */,
@@ -420,6 +423,7 @@
 				172E41F32A1B90A300C70A10 /* WatchNowModel.swift in Sources */,
 				17A019602A1AA9A1008FD577 /* PreviewProvider.swift in Sources */,
 				17869BD72A1B4D4000F23036 /* DetailView.swift in Sources */,
+				17D09C262A210CA1005508CC /* SearchDataService.swift in Sources */,
 				17C8E9632A20AA25001146C0 /* MoreFullDetails.swift in Sources */,
 				1764E1462A1E695800B920A7 /* MediaView.swift in Sources */,
 				172E41FC2A1BAAA800C70A10 /* PosterImageService.swift in Sources */,

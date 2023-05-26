@@ -19,11 +19,13 @@ struct MovieMagicResult: Identifiable, Decodable {
     let id: Int?
     let originalLanguage, originalTitle, originalName, overview: String?
     let posterPath, releaseDate, title: String?
+    let media_type: String?
     let popularity: Double?
     let voteAverage: Double?
     let voteCount: Int?
     let status: String?
     var kindMedia: String?
+    
     
     enum CodingKeys: String, CodingKey {
         case backdropPath = "backdrop_path"
@@ -36,6 +38,7 @@ struct MovieMagicResult: Identifiable, Decodable {
         case posterPath = "poster_path"
         case releaseDate = "release_date"
         case title
+        case media_type = "media_type"
         case voteAverage = "vote_average"
         case voteCount = "vote_count"
         case status

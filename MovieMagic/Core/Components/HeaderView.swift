@@ -41,7 +41,7 @@ extension HeaderView {
     }
     
     private var searchIcon: some View{
-        NavigationLink(destination: SearchView()) {
+        NavigationLink(destination: SearchView(vm: SearchViewModel(textSearch: ""))) {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(Color.theme.accent)
                 .font(.title2)
