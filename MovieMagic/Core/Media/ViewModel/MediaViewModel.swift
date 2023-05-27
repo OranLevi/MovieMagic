@@ -16,7 +16,6 @@ class MediaViewModel: ObservableObject {
     @Published var selectedItemId:Int = 0
     @Published var selectedKindMedia: MediaType = .movie
     
-    
     @Published var isLoadingMore = false
     
     private let dataService = MediaDataService()
@@ -39,6 +38,7 @@ class MediaViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    // after click loadMore update page count + get data
     func loadMore(mediaType: MediaType){
         pageCount += 1
         dataService.getMediaData(mediaType: mediaType, page: pageCount)
