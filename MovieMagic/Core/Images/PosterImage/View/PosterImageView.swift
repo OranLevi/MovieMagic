@@ -23,8 +23,13 @@ struct PosterImageView: View {
                     .resizable()
                     .cornerRadius(20)
                     .frame(minHeight: 185, maxHeight: 185)
+            } else if vm.isLoading {
+                ProgressView()
+                    .tint(Color.theme.accent)
+                    .frame(minHeight: 185, maxHeight: 185)
             } else {
                 Image(systemName: "questionmark")
+                    .frame(minHeight: 185, maxHeight: 185)
             }
         }
     }

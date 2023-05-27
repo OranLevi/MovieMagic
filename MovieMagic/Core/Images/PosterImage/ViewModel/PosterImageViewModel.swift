@@ -12,6 +12,7 @@ import Combine
 class PosterImageViewModel: ObservableObject {
     
     @Published var image: UIImage? = nil
+    @Published var isLoading: Bool = true
     
     let content: MovieMagicResult
     private let posterDataService: PosterImageService
@@ -25,9 +26,12 @@ class PosterImageViewModel: ObservableObject {
     
     private func addSubscribers(){
         posterDataService.$image
-            .sink { [weak self] returnedImage in
+            .sink(receiveCompletion: { [weak self] (_) in
+                self?.isLoading = false
+            }, receiveValue: {[weak self] returnedImage in
                 self?.image = returnedImage
-            }
+            })
+        
             .store(in: &cancellables)
     }
 }

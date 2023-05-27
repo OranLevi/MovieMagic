@@ -13,17 +13,18 @@ class SearchViewModel: ObservableObject {
     @Published var search: [MovieMagicResult] = []
     @Published var textSearch: String {
         didSet {
+            isLoading = true
             textSearchSubject.send(textSearch)
         }
     }
     @Published var selectedItemId:Int = 0
     @Published var selectedKindMedia: MediaType = .movie
+    @Published var isLoading: Bool = false
     
     private let searchService: SearchDataService
     
     private var cancellables = Set<AnyCancellable>()
     private let textSearchSubject = PassthroughSubject<String, Never>()
-    
     
     init(textSearch: String) {
         self.textSearch = textSearch
@@ -33,6 +34,7 @@ class SearchViewModel: ObservableObject {
     
     private func getSearchData(textSearch: String) {
         searchService.getSearchData(textSearch: textSearch)
+        isLoading = false
     }
     
     private func addSubscribers() {

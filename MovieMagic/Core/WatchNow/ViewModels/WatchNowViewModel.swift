@@ -41,6 +41,34 @@ class WatchNowViewModel: ObservableObject {
         return moviesUpcomingArray + tvTopRatedArray
     }
     
+    var hasData: Bool {
+        if selectedCategory == selectedCategoryNames.populars.rawValue {
+            return !popularArray.isEmpty
+        } else if selectedCategory == selectedCategoryNames.upcoming.rawValue {
+            return !upcomingArray.isEmpty
+        } else if selectedCategory == selectedCategoryNames.trending.rawValue {
+            return !trendingArray.isEmpty
+        } else if selectedCategory == selectedCategoryNames.topRated.rawValue {
+            return !moviesTopRatedArray.isEmpty
+        } else {
+            return false
+        }
+    }
+    
+    var arrayToShow: [MovieMagicResult] {
+        if selectedCategory == selectedCategoryNames.populars.rawValue {
+            return popularArray
+        } else if selectedCategory == selectedCategoryNames.upcoming.rawValue {
+            return upcomingArray
+        } else if selectedCategory == selectedCategoryNames.trending.rawValue {
+            return trendingArray
+        } else if selectedCategory == selectedCategoryNames.topRated.rawValue {
+            return moviesTopRatedArray
+        } else {
+            return []
+        }
+    }
+    
     @Published var navBarArray: [String] = ["Populars","Upcoming","Trending","Top Rated"]
     @Published var selectedCategory: Int = 0
     

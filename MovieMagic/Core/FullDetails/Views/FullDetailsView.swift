@@ -24,29 +24,36 @@ struct FullDetailsView: View {
             Color.theme.background
                 .ignoresSafeArea()
             
-            ScrollView{
-                VStack(alignment: .center, spacing: 20 ){
-                    
-                    image
-                    titleName
-                    ratting
-                    overViewTitle
-                    
-                    Divider()
-                        .overlay(Color.theme.accent)
-                    
-                    overViewDescription
-                    moreDetailsTitle
-                    
-                    Divider()
-                        .overlay(Color.theme.accent)
-                    
-                    moreDetailsDescription
-                    
-                    Spacer()
+            if !vm.moreFullDetails.isEmpty && !vm.fullDetails.isEmpty {
+                
+                ScrollView{
+                    VStack(alignment: .center, spacing: 20 ){
+                        
+                        image
+                        titleName
+                        ratting
+                        overViewTitle
+                        
+                        Divider()
+                            .overlay(Color.theme.accent)
+                        
+                        overViewDescription
+                        moreDetailsTitle
+                        
+                        Divider()
+                            .overlay(Color.theme.accent)
+                        
+                        moreDetailsDescription
+                        
+                        Spacer()
+                    }
+                    .padding()
                 }
-                .padding()
+            } else {
+                ProgressView()
+                    .tint(Color.theme.accent)
             }
+            
         }.onAppear{
             vm.loadDetails(mediaType: kindMedia, id: id)
         }
@@ -61,10 +68,17 @@ struct FullDetailsView_Previews: PreviewProvider {
 
 extension FullDetailsView {
     private var image: some View {
-        if let backdropPath = vm.fullDetails.first?.backdropPath {
+        let backdropPath = vm.fullDetails.first?.backdropPath
+        
+        if let backdropPath = backdropPath {
             return AnyView(BackdropImageView(backdropPathUrl: "\(backdropPath)"))
         } else {
-            return AnyView(ProgressView())
+            return AnyView(
+                ProgressView()
+                    .frame(maxWidth: .infinity, minHeight: 190)
+                    .tint(Color.white)
+                
+            )
         }
     }
     
@@ -101,7 +115,7 @@ extension FullDetailsView {
     }
     
     private var overViewDescription: some View {
-        Text(vm.fullDetails.first?.overview ?? "N/A overView")
+        Text(vm.fullDetails.first?.overview ?? "No overview available")
             .foregroundColor(Color.theme.accent)
             .font(.callout)
             .frame(maxWidth: .infinity, alignment: .leading)

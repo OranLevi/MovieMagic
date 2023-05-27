@@ -16,14 +16,20 @@ struct BackdropImageView: View {
     }
     
     var body: some View {
-        ZStack{
+        VStack{
+            
             if let image = vm.image {
                 Image(uiImage: image)
                     .resizable()
-                    .cornerRadius(10)
+                    .cornerRadius(20)
                     .frame(maxWidth: .infinity, maxHeight: 190)
+            } else if vm.isLoading {
+                ProgressView()
+                    .tint(Color.theme.accent)
+                    .frame(maxWidth: .infinity, minHeight: 190)
             } else {
                 Image(systemName: "questionmark")
+                    .frame(maxWidth: .infinity, minHeight: 190)
             }
         }
     }
@@ -31,6 +37,10 @@ struct BackdropImageView: View {
 
 struct BackdropImageView_Previews: PreviewProvider {
     static var previews: some View {
-        BackdropImageView(backdropPathUrl: dev.movie.backdropPath ?? "")
+        ZStack{
+            Color.theme.background
+            BackdropImageView(backdropPathUrl: "")
+        }
+        
     }
 }

@@ -28,9 +28,32 @@ struct WatchNowView: View {
                 HeaderView(title: "Watch Now")
                 
                 navBar
-                ScrollView(.vertical, showsIndicators: false){
-                    detail
+                if vm.hasData {
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    ScrollView(.vertical, showsIndicators: false){
+                        
+                        detail
+                        
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                } else {
+                    Spacer()
+                    ProgressView()
+                        .tint(Color.theme.accent)
                 }
+                
                 Spacer()
             }
             .padding(.horizontal,2)
@@ -65,6 +88,7 @@ extension WatchNowView {
                                 .bold()
                         }
                         .onTapGesture {
+                            
                             withAnimation(.spring()){
                                 vm.selectedCategory = index
                             }
@@ -75,25 +99,27 @@ extension WatchNowView {
     }
     
     private var detail: some View {
-        
-        LazyVGrid(
-            columns: columns,
-            alignment: .center,
-            spacing: 5,
-            pinnedViews: []) {
-                ForEach(
-                    vm.selectedCategory == selectedCategoryNames.populars.rawValue ? vm.popularArray:
-                        vm.selectedCategory == selectedCategoryNames.upcoming.rawValue ? vm.upcomingArray:
-                        vm.selectedCategory == selectedCategoryNames.trending.rawValue ? vm.trendingArray :
-                        vm.selectedCategory == selectedCategoryNames.topRated.rawValue ? vm.moviesTopRatedArray: [])  { item in
-                            DetailView(detail: item)
-                                .onTapGesture {
-                                    vm.selectedItemId = item.id ?? 0
-                                    vm.selectedKindMedia = item.kindMedia == "movie" ? .movie : .tv
-                                    showFullDetailView.toggle()
-                                }
-                        }
-            }
+        ScrollViewReader { scrollViewProxy in
+            
+            LazyVGrid(
+                columns: columns,
+                alignment: .center,
+                spacing: 5,
+                pinnedViews: []) {
+                    ForEach(vm.arrayToShow)  { item in
+                        DetailView(detail: item)
+                            .onTapGesture {
+                                vm.selectedItemId = item.id ?? 0
+                                vm.selectedKindMedia = item.kindMedia == "movie" ? .movie : .tv
+                                showFullDetailView.toggle()
+                            }
+                    }.id("watchNow")
+                } .onChange(of: vm.selectedCategory) { _ in
+                    withAnimation(.spring()){
+                        scrollViewProxy.scrollTo("watchNow", anchor: .top)
+                    }
+                }
+        }
     }
 }
 

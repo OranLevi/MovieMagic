@@ -25,8 +25,18 @@ struct SearchView: View {
             
             VStack{
                 searchTextFiled
-                ScrollView(.vertical, showsIndicators: false){
-                    results
+                
+                if !vm.search.isEmpty{
+                    ScrollView(.vertical, showsIndicators: false){
+                        results
+                    }
+                } else if vm.isLoading {
+                    Spacer()
+                    ProgressView()
+                        .tint(Color.theme.accent)
+                } else {
+                    Spacer()
+                    noResult
                 }
                 
                 Spacer()
@@ -85,20 +95,31 @@ extension SearchView {
     
     private var results: some View {
         
-        LazyVGrid(
-            columns: columns,
-            alignment: .center,
-            spacing: 5,
-            pinnedViews: []) {
-                ForEach(vm.search) { item in
-                    DetailView(detail: item)
-                        .onTapGesture {
-                            vm.selectedItemId = item.id ?? 0
-                            vm.selectedKindMedia = item.media_type == "movie" ? .movie : .tv
-                            showFullDetailView.toggle()
-                        }
+        ScrollViewReader { scrollViewProxy in
+            LazyVGrid(
+                columns: columns,
+                alignment: .center,
+                spacing: 5,
+                pinnedViews: []) {
+                    ForEach(vm.search) { item in
+                        DetailView(detail: item)
+                            .onTapGesture {
+                                vm.selectedItemId = item.id ?? 0
+                                vm.selectedKindMedia = item.media_type == "movie" ? .movie : .tv
+                                showFullDetailView.toggle()
+                            }
+                    }.id("searchResults")
+                } .onChange(of: vm.textSearch) { _ in
+                    withAnimation(.spring()){
+                        scrollViewProxy.scrollTo("searchResults", anchor: .top)
+                    }
                 }
-            }
+        }
+    }
+    
+    private var noResult: some View {
+        Text("No result to show!")
+            .foregroundColor(Color.theme.accent)
     }
 }
 

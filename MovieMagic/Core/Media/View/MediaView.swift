@@ -28,16 +28,28 @@ struct MediaView: View {
             
             VStack{
                 HeaderView(title:
-                        tabSelection == 1 ? "Movies" :
-                        tabSelection == 2 ? "TV" : "")
-                
-                ScrollView(.vertical, showsIndicators: false){
-                    detail
-                    loadMoreButton
+                            tabSelection == 1 ? "Movies" :
+                            tabSelection == 2 ? "TV" : "")
+                if tabSelection == 1 && !vm.moviesArray.isEmpty ||
+                    tabSelection == 2 && !vm.tvArray.isEmpty {
+                    ScrollView(.vertical, showsIndicators: false){
+                        detail
+                        if vm.isLoadingMore {
+                            isLoadingMoreProgress
+                        } else {
+                            loadMoreButton
+                        }
+                    }
+                } else {
+                    Spacer()
+                    ProgressView()
+                        .tint(Color.theme.accent)
                 }
+                
                 Spacer()
             }
-        }        .background(
+        }
+        .background(
             NavigationLink(destination: FullDetailsView(id: $vm.selectedItemId, kindMedia: $vm.selectedKindMedia),
                            isActive: $showFullDetailView,
                            label: { EmptyView()})
@@ -75,6 +87,7 @@ extension MediaView {
     
     private var loadMoreButton: some View {
         Button {
+            vm.isLoadingMore = true
             vm.loadMore(mediaType:
                             tabSelection == 1 ? .movie : .tv)
         } label: {
@@ -84,5 +97,15 @@ extension MediaView {
                 .background(Color.theme.secondaryBackgroundColor)
                 .cornerRadius(10)
         }
+        .disabled(vm.isLoadingMore)
+    }
+    
+    private var isLoadingMoreProgress: some View {
+        ProgressView()
+            .tint(Color.theme.accent)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.theme.secondaryBackgroundColor)
+            .cornerRadius(10)
     }
 }

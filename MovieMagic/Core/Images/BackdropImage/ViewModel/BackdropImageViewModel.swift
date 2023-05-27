@@ -12,6 +12,7 @@ import Combine
 class BackdropImageViewModel: ObservableObject {
     
     @Published var image: UIImage? = nil
+    @Published var isLoading: Bool = true
     
     private let backdropDataService: BackdropImageService
     
