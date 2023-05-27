@@ -8,6 +8,16 @@
 import Foundation
 import Combine
 
+enum MediaCategoryUrl: String {
+    case moviePopular = "https://api.themoviedb.org/3/movie/popular?api_key="
+    case movieTrending = "https://api.themoviedb.org/3/trending/movie/day?api_key="
+    case movieUpcoming = "https://api.themoviedb.org/3/movie/upcoming?api_key="
+    case movieTopRated = "https://api.themoviedb.org/3/movie/top_rated?api_key="
+    case tvPopular = "https://api.themoviedb.org/3/tv/popular?api_key="
+    case tvTrending = "https://api.themoviedb.org/3/trending/tv/day?api_key="
+    case tvTopRated = "https://api.themoviedb.org/3/tv/top_rated?api_key="
+}
+
 class WatchNowDataService {
     
     // movies Arrays
@@ -23,32 +33,22 @@ class WatchNowDataService {
     
     private var cancellables = Set<AnyCancellable>()
     
-    enum MediaUrl: String {
-        case moviePopular = "https://api.themoviedb.org/3/movie/popular?api_key="
-        case movieTrending = "https://api.themoviedb.org/3/trending/movie/day?api_key="
-        case movieUpcoming = "https://api.themoviedb.org/3/movie/upcoming?api_key="
-        case movieTopRated = "https://api.themoviedb.org/3/movie/top_rated?api_key="
-        case tvPopular = "https://api.themoviedb.org/3/tv/popular?api_key="
-        case tvTrending = "https://api.themoviedb.org/3/trending/tv/day?api_key="
-        case tvTopRated = "https://api.themoviedb.org/3/tv/top_rated?api_key="
-    }
-    
     init(){
         // get movies data
-        getData(mediaType: .moviePopular)
-        getData(mediaType: .movieTrending)
-        getData(mediaType: .movieUpcoming)
-        getData(mediaType: .movieTopRated)
+        getData(mediaTypeUrl: .moviePopular, page: 1)
+        getData(mediaTypeUrl: .movieTrending, page: 1)
+        getData(mediaTypeUrl: .movieUpcoming, page: 1)
+        getData(mediaTypeUrl: .movieTopRated, page: 1)
         
         // get tv data
-        getData(mediaType: .tvPopular)
-        getData(mediaType: .tvTrending)
-        getData(mediaType: .tvTopRated)
+        getData(mediaTypeUrl: .tvPopular, page: 1)
+        getData(mediaTypeUrl: .tvTrending, page: 1)
+        getData(mediaTypeUrl: .tvTopRated, page: 1)
     }
     
-    private func getData(mediaType: MediaUrl){
+    func getData(mediaTypeUrl: MediaCategoryUrl, page: Int){
         
-        let urlString = "\(mediaType.rawValue)\(Constants.API_KEY)"
+        let urlString = "\(mediaTypeUrl.rawValue)\(Constants.API_KEY)&page=\(page)"
         
         guard let url = URL(string: urlString) else { return }
         NetworkingManger.download(url: url)
@@ -58,13 +58,13 @@ class WatchNowDataService {
             .sink { completion in
                 NetworkingManger.handleCompletion(completion: completion)
             } receiveValue: { [weak self] returnedMovies in
-                self?.switchMediaType(mediaType: mediaType, returnedMovies: returnedMovies)
+                self?.switchMediaType(mediaType: mediaTypeUrl, returnedMovies: returnedMovies)
                 
             }
             .store(in: &cancellables)
     }
     
-    func switchMediaType(mediaType: MediaUrl, returnedMovies: MovieMagicModel){
+    func switchMediaType(mediaType: MediaCategoryUrl, returnedMovies: MovieMagicModel){
         
         switch mediaType {
         case .moviePopular:
@@ -84,7 +84,7 @@ class WatchNowDataService {
         }
     }
     
-    private func updateKindMedia(category: MediaUrl,array: inout [MovieMagicResult], returnedMovies: MovieMagicModel) {
+    private func updateKindMedia(category: MediaCategoryUrl,array: inout [MovieMagicResult], returnedMovies: MovieMagicModel) {
         let kindMedia: String?
         
         switch category {

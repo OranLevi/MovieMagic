@@ -45,6 +45,7 @@ class FullDetailsViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    //get full detail about selected movie / tv
     func loadDetails(mediaType: MediaType, id: Int){
         fullDetailsDataService.getFullDetails(mediaType: mediaType, id: id)
     }

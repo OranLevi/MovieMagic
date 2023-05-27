@@ -18,3 +18,8 @@ import Foundation
  
  }
  */
+
+//enum MediaType: String {
+//    case movie
+//    case tv
+//}
